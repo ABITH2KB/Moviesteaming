@@ -41,6 +41,7 @@ dependencies:
   firebase_core: ^3.15.2
   firebase_auth: ^5.7.0
   cloud_firestore: ^5.6.12
+  video_player: ^2.9.5
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +73,10 @@ flutter:
      - asset/image/tv.png
      - asset/image/download.png
      - asset/image/profile.png
+     - asset/image/flat-color-icons_google.png
+     - asset/image/ic_baseline-apple.png
+     - asset/image/bgremoved.png
+     - asset/image/gymkhana.webp
 
   #   - images/a_dot_ham.jpeg
 

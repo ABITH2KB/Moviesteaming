@@ -1,3 +1,4 @@
+import 'package:bookfilim/subsciption.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -70,9 +71,15 @@ class ProfileScreen extends StatelessWidget {
               const Text("Membership",
                   style: TextStyle(color: Colors.white, fontSize: 18)),
               const SizedBox(height: 12),
-              buildTile(
-                title: "Monthly Subscriptions",
-                subtitle: "Subscription until June 14 2021",
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => SubscriptionScreen()));
+                },
+                child: buildTile(
+                  title: "Monthly Subscriptions",
+                  subtitle: "Subscription until June 14 2021",
+                ),
               ),
               const SizedBox(height: 24),
 
@@ -95,6 +102,8 @@ class ProfileScreen extends StatelessWidget {
                 title: "Your Account",
                 subtitle: "Account settings, change number",
               ),
+
+             
             ],
           ),
         ),

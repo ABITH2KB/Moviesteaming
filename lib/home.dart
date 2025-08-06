@@ -1,4 +1,5 @@
 import 'package:bookfilim/elevatedbttonwidget.dart';
+import 'package:bookfilim/moviescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -13,6 +14,7 @@ class _HomeState extends State<Home> {
   bool _selected = false;
   String? _selectedGenre;
 
+  int userCoins = 20; // Initial coin balance
 
   List<String> categories = [
     'Action',
@@ -23,27 +25,69 @@ class _HomeState extends State<Home> {
     'Romance',
   ];
 
-  List<Map<String, String>> sliderData = [
+  List<Map<String, dynamic>> sliderData = [
     {
-      'image': 'asset/image/movie.jpg',
-      'name': 'The Great Escape',
+      'image': 'asset/image/gymkhana.webp',
+      'name': 'Alappuzha Gymkhana',
       'rating': '4.5',
       'duration': '2h 15m',
       'genre': 'Action',
+      'coinCost': 3,
+      'isUnlocked': false,
+      'videoUrl':
+          'https://firebasestorage.googleapis.com/v0/b/moviebooking-cb614.firebasestorage.app/o/gymkana.mp4?alt=media&token=c339bfb4-c2d1-4437-ae49-2bcdff7a5cd2',
     },
     {
-      'image': 'asset/image/movie.jpg',
-      'name': 'Laugh Riot',
+      'image': 'asset/image/deadpool.webp',
+      'name': 'Deadpool vs Wolverine',
       'rating': '4.2',
       'duration': '1h 45m',
       'genre': 'Comedy',
+      'coinCost': 2,
+      'isUnlocked': false,
+      'videoUrl':
+          'https://firebasestorage.googleapis.com/v0/b/moviebooking-cb614.firebasestorage.app/o/gymkana.mp4?alt=media&token=c339bfb4-c2d1-4437-ae49-2bcdff7a5cd2',
     },
     {
-      'image': 'asset/image/movie.jpg',
-      'name': 'Space Wonders',
+      'image': 'asset/image/manofsteel.webp',
+      'name': 'Man of Steel',
       'rating': '4.8',
       'duration': '2h 10m',
       'genre': 'Sci-Fi',
+      'coinCost': 4,
+      'isUnlocked': false,
+      'videoUrl':
+          'https://firebasestorage.googleapis.com/v0/b/moviebooking-cb614.firebasestorage.app/o/trailerrr.mp4?alt=media&token=7a37e48d-ff7e-4efc-a064-991e27fc7e2f',
+    },
+  ];
+
+  List<Map<String, dynamic>> movielist = [
+    {
+      'image': 'asset/image/gymkhana.webp',
+      'name': 'Alappuzha Gymkhana',
+      'rating': '4.5',
+      'duration': '2h 15m',
+      'genre': 'Action',
+      'videoUrl':
+          'https://firebasestorage.googleapis.com/v0/b/moviebooking-cb614.firebasestorage.app/o/gymkana.mp4?alt=media&token=c339bfb4-c2d1-4437-ae49-2bcdff7a5cd2',
+    },
+    {
+      'image': 'asset/image/deadpool.webp',
+      'name': 'Deadpool vs Wolverine',
+      'rating': '4.2',
+      'duration': '1h 45m',
+      'genre': 'Comedy',
+      'videoUrl':
+          'https://firebasestorage.googleapis.com/v0/b/moviebooking-cb614.firebasestorage.app/o/gymkana.mp4?alt=media&token=c339bfb4-c2d1-4437-ae49-2bcdff7a5cd2',
+    },
+    {
+      'image': 'asset/image/manofsteel.webp',
+      'name': 'Man of Steel',
+      'rating': '4.8',
+      'duration': '2h 10m',
+      'genre': 'Sci-Fi',
+      'videoUrl':
+          'https://firebasestorage.googleapis.com/v0/b/moviebooking-cb614.firebasestorage.app/o/trailerrr.mp4?alt=media&token=7a37e48d-ff7e-4efc-a064-991e27fc7e2f',
     },
   ];
 
@@ -72,6 +116,87 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void unlockMovie(int index) {
+    int cost = sliderData[index]['coinCost'];
+    if (userCoins >= cost) {
+      setState(() {
+        userCoins -= cost;
+        sliderData[index]['isUnlocked'] = true;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Unlocked: ${sliderData[index]['name']}")),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Not enough coins")),
+      );
+    }
+  }
+
+  void _showAddCoinsDialog(BuildContext context) {
+    final TextEditingController coinController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.grey[900],
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          title: const Text(
+            'Add Coins',
+            style: TextStyle(color: Colors.white),
+          ),
+          content: TextField(
+            controller: coinController,
+            keyboardType: TextInputType.number,
+            style: const TextStyle(color: Colors.white),
+            decoration: const InputDecoration(
+              hintText: 'Enter number of coins',
+              hintStyle: TextStyle(color: Colors.white54),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white24),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.amber),
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel', style: TextStyle(color: Colors.red)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Add', style: TextStyle(color: Colors.amber)),
+              onPressed: () {
+                final enteredCoins = int.tryParse(coinController.text);
+                if (enteredCoins != null && enteredCoins > 0) {
+                  setState(() {
+                    userCoins += enteredCoins;
+                  });
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Added $enteredCoins coins!'),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Enter a valid number'),
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void dispose() {
     searchController.dispose();
@@ -83,27 +208,37 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0B091C),
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        elevation: 0,
+        title: Row(
+          children: [
+            const Text('Home', style: TextStyle(color: Colors.white)),
+            const Spacer(),
+            const Icon(Icons.notifications, color: Colors.white),
+            const SizedBox(width: 10),
+            GestureDetector(
+              onTap: () => _showAddCoinsDialog(context),
+              child: Row(
+                children: [
+                  const Icon(Icons.monetization_on, color: Colors.amber),
+                  const SizedBox(width: 4),
+                  Text(
+                    '$userCoins',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Top Row
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    'Home Screen',
-                    style: TextStyle(color: Colors.white, fontSize: 24),
-                  ),
-                  Spacer(),
-                  Icon(Icons.notifications, color: Colors.white),
-                ],
-              ),
-              const SizedBox(height: 20),
-
-              // Search Field
               TextField(
                 controller: searchController,
                 focusNode: focusNode,
@@ -121,8 +256,6 @@ class _HomeState extends State<Home> {
                 ),
               ),
               const SizedBox(height: 10),
-
-              // Category Suggestions
               if (focusNode.hasFocus || searchController.text.isNotEmpty)
                 ...filteredSuggestions.map((category) {
                   return Padding(
@@ -146,10 +279,7 @@ class _HomeState extends State<Home> {
                     ),
                   );
                 }).toList(),
-
               const SizedBox(height: 20),
-
-              // Carousel Slider
               CarouselSlider(
                 options: CarouselOptions(
                   height: 200.0,
@@ -158,7 +288,9 @@ class _HomeState extends State<Home> {
                   viewportFraction: 0.9,
                   autoPlayInterval: const Duration(seconds: 3),
                 ),
-                items: sliderData.map((movie) {
+                items: sliderData.asMap().entries.map((entry) {
+                  int index = entry.key;
+                  Map<String, dynamic> movie = entry.value;
                   return Builder(
                     builder: (BuildContext context) {
                       return Stack(
@@ -166,7 +298,7 @@ class _HomeState extends State<Home> {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(12),
                             child: Image.asset(
-                              movie['image']!,
+                              movie['image'],
                               fit: BoxFit.cover,
                               width: double.infinity,
                               height: 200,
@@ -193,45 +325,59 @@ class _HomeState extends State<Home> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    movie['name']!,
+                                    movie['name'],
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
                                   Row(
                                     children: [
                                       Icon(Icons.star,
                                           color: Colors.yellow[700], size: 16),
                                       const SizedBox(width: 4),
-                                      Text(
-                                        movie['rating']!,
-                                        style: const TextStyle(
-                                            color: Colors.yellow
-                                            ),
-                                      ),
+                                      Text(movie['rating'],
+                                          style: const TextStyle(color: Colors.yellow)),
                                       const SizedBox(width: 10),
                                       const Icon(Icons.schedule,
                                           color: Colors.white70, size: 16),
                                       const SizedBox(width: 4),
-                                      Text(
-                                        movie['duration']!,
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                      ),
+                                      Text(movie['duration'],
+                                          style: const TextStyle(color: Colors.white)),
                                       const SizedBox(width: 10),
                                       const Icon(Icons.movie,
                                           color: Colors.white70, size: 16),
                                       const SizedBox(width: 4),
-                                      Text(
-                                        movie['genre']!,
-                                        style: const TextStyle(
-                                            color: Colors.white),
+                                      Text(movie['genre'],
+                                          style: const TextStyle(color: Colors.white)),
+                                      const Spacer(),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: movie['isUnlocked']
+                                              ? Colors.green
+                                              : Colors.amber,
+                                        ),
+                                        onPressed: movie['isUnlocked']
+                                            ? () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        VideoPlayerScreen(
+                                                      videoUrl:
+                                                          movie['videoUrl'],
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                            : () => unlockMovie(index),
+                                        child: Text(movie['isUnlocked']
+                                            ? 'Watch'
+                                            : 'Unlock'),
                                       ),
                                     ],
-                                  ),
+                                  )
                                 ],
                               ),
                             ),
@@ -242,85 +388,116 @@ class _HomeState extends State<Home> {
                   );
                 }).toList(),
               ),
-
-              const SizedBox(height: 20),
-
-              const Text('Continue watching',
-                  style: TextStyle(color: Colors.white, fontSize: 20)),
               const SizedBox(height: 20),
               const Text('Genres',
                   style: TextStyle(color: Colors.white, fontSize: 20)),
               const SizedBox(height: 10),
-
-              // Genre Buttons
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: [
-                    SingleChildScrollView(
-  scrollDirection: Axis.horizontal,
-  child: Row(
-    children: [
-      CustomButton(
-        text: 'Action',
-        backgroundColor: _selectedGenre == 'Action' ? Colors.amber : Colors.white10,
-        textColor: _selectedGenre == 'Action' ? Colors.black : Colors.white,
-        onPressed: () {
-          setState(() {
-            _selectedGenre = 'Action';
-          });
-        },
-      ),
-      const SizedBox(width: 10),
-      CustomButton(
-        text: 'Comedy',
-        backgroundColor: _selectedGenre == 'Comedy' ? Colors.amber : Colors.white10,
-        textColor: _selectedGenre == 'Comedy' ? Colors.black : Colors.white,
-        onPressed: () {
-          setState(() {
-            _selectedGenre = 'Comedy';
-          });
-        },
-      ),
-      const SizedBox(width: 10),
-      CustomButton(
-        text: 'Drama',
-        backgroundColor: _selectedGenre == 'Drama' ? Colors.amber : Colors.white10,
-        textColor: _selectedGenre == 'Drama' ? Colors.black : Colors.white,
-        onPressed: () {
-          setState(() {
-            _selectedGenre = 'Drama';
-          });
-        },
-      ),
-      const SizedBox(width: 10),
-      CustomButton(
-        text: 'Horror',
-        backgroundColor: _selectedGenre == 'Horror' ? Colors.amber : Colors.white10,
-        textColor: _selectedGenre == 'Horror' ? Colors.black : Colors.white,
-        onPressed: () {
-          setState(() {
-            _selectedGenre = 'Horror';
-          });
-        },
-      ),
-      const SizedBox(width: 10),
-      CustomButton(
-        text: 'Sci-Fi',
-        backgroundColor: _selectedGenre == 'Sci-Fi' ? Colors.amber : Colors.white10,
-        textColor: _selectedGenre == 'Sci-Fi' ? Colors.black : Colors.white,
-        onPressed: () {
-          setState(() {
-            _selectedGenre = 'Sci-Fi';
-          });
-        },
-      ),
-    ],
-  ),
-),
-
-                  ],
+                  children: categories.map((genre) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: CustomButton(
+                        text: genre,
+                        backgroundColor: _selectedGenre == genre
+                            ? Colors.amber
+                            : Colors.white10,
+                        textColor: _selectedGenre == genre
+                            ? Colors.black
+                            : Colors.white,
+                        onPressed: () {
+                          setState(() {
+                            _selectedGenre = genre;
+                          });
+                        },
+                      ),
+                    );
+                  }).toList(),
                 ),
+              ),
+              const SizedBox(height: 20),
+              const Text('Top Picks',
+                  style: TextStyle(color: Colors.white, fontSize: 20)),
+              const SizedBox(height: 10),
+              GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 2,
+                crossAxisSpacing: 20,
+                mainAxisSpacing: 20,
+                childAspectRatio: 0.75,
+                children: movielist.map((movie) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => VideoPlayerScreen(
+                            videoUrl: movie['videoUrl'],
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white10,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(12),
+                                topRight: Radius.circular(12)),
+                            child: Image.asset(
+                              movie['image'],
+                              height: 140,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              movie['name'],
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14),
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Row(
+                              children: [
+                                Icon(Icons.star,
+                                    color: Colors.yellow[700], size: 16),
+                                const SizedBox(width: 4),
+                                Text(
+                                  movie['rating'],
+                                  style: const TextStyle(
+                                      color: Colors.yellow, fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 4),
+                            child: Text(
+                              "${movie['duration']} • ${movie['genre']}",
+                              style: const TextStyle(
+                                  color: Colors.white70, fontSize: 12),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
             ],
           ),

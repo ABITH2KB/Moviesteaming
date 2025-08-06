@@ -1,43 +1,39 @@
-
-
-
 import 'package:bookfilim/details.dart';
-import 'package:bookfilim/tvshowscreen.dart';
 import 'package:flutter/material.dart';
 
 class ExploreScreen extends StatelessWidget {
-
-
-
   final List<Map<String, dynamic>> movies = [
     {
       "title": "The Mitrix: Reloaded",
       "rating": "8.1",
       "duration": "1h 15min",
-      "genre": "Sci-Fi"
+      "genre": "Sci-Fi",
+      "image": "asset/image/matrix.jpeg"
     },
     {
-      "title": "Matt Max: Fury Way",
+      "title": "Mad Max: Fury Way",
       "rating": "7.5",
       "duration": "1h 45min",
-      "genre": "Action"
+      "genre": "Action",
+      "image": "asset/image/mad max.jpeg"
     },
     {
-      "title": "Murder Lord",
+      "title": "Panchayat",
       "rating": "6.5",
       "duration": "1h 45min",
-      "genre": "Thriller"
+      "genre": "Thriller",
+      "image": "asset/image/panchayat.webp"
     },
     {
-      "title": "Akuaman The Saga",
+      "title": "The Boys",
       "rating": "7.5",
       "duration": "1h 45min",
-      "genre": "Fantasy"
+      "genre": "Fantasy",
+      "image": "asset/image/boys.jpeg"
     },
   ];
 
   final darkBackground = const Color(0xFF0E0C1D);
-  final purpleAccent = const Color(0xFF6C3DF4);
 
   ExploreScreen({super.key});
 
@@ -120,19 +116,23 @@ class ExploreScreen extends StatelessWidget {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      GestureDetector(onTap: () {
+                      GestureDetector(
+                        onTap: () {
                           Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Details(),
-                                ),
-                              );
-                      },
-                      child: Container(
-                        height: 140,
-                        decoration: BoxDecoration(
-                          color: Colors.blueGrey[300],
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Details(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 140,
+                          decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
+                            image: DecorationImage(
+                              image: AssetImage(movie['image']),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
@@ -153,10 +153,8 @@ class ExploreScreen extends StatelessWidget {
                                   builder: (context) => Details(),
                                 ),
                               );
-                              // Handle favorite action
                             },
                             child: Container(
-                              
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 6, vertical: 2),
                               decoration: BoxDecoration(

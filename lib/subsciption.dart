@@ -34,7 +34,7 @@ class SubscriptionScreen extends StatelessWidget {
             const SizedBox(height: 24),
             buildPlanCard(
               title: "Basic",
-              price: "\$4.99/month",
+              price: "\₹4.99/month",
               features: [
                 "480p Resolution",
                 "Ad-free streaming",
@@ -46,7 +46,7 @@ class SubscriptionScreen extends StatelessWidget {
             const SizedBox(height: 16),
             buildPlanCard(
               title: "Standard",
-              price: "\$6.99/month",
+              price: "\₹6.99/month",
               features: [
                 "1080p Resolution",
                 "Ad-free streaming",
@@ -58,7 +58,7 @@ class SubscriptionScreen extends StatelessWidget {
             const SizedBox(height: 16),
             buildPlanCard(
               title: "Premium",
-              price: "\$8.99/month",
+              price: "\₹8.99/month",
               features: [
                 "4K+ HDR",
                 "Ad-free streaming",

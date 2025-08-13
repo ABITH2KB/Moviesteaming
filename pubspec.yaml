@@ -77,6 +77,15 @@ flutter:
      - asset/image/ic_baseline-apple.png
      - asset/image/bgremoved.png
      - asset/image/gymkhana.webp
+     - asset/image/8.jpeg
+     - asset/image/1.jpeg
+     - asset/image/2.jpeg
+     - asset/image/3.jpeg
+     - asset/image/4.jpeg
+     - asset/image/5.jpeg
+     - asset/image/6.jpeg
+     - asset/image/7.jpeg
+     
 
   #   - images/a_dot_ham.jpeg
 

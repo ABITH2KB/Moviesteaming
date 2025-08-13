@@ -4,32 +4,32 @@ import 'package:flutter/material.dart';
 class ExploreScreen extends StatelessWidget {
   final List<Map<String, dynamic>> movies = [
     {
-      "title": "The Mitrix: Reloaded",
+      "title": "I respect your choice",
       "rating": "8.1",
       "duration": "1h 15min",
       "genre": "Sci-Fi",
-      "image": "asset/image/matrix.jpeg"
+      "image": "asset/image/1.jpeg"
     },
     {
-      "title": "Mad Max: Fury Way",
+      "title": "Broken man",
       "rating": "7.5",
       "duration": "1h 45min",
       "genre": "Action",
-      "image": "asset/image/mad max.jpeg"
+       "image": "asset/image/2.jpeg"
     },
     {
-      "title": "Panchayat",
+      "title": "No biggie",
       "rating": "6.5",
       "duration": "1h 45min",
       "genre": "Thriller",
-      "image": "asset/image/panchayat.webp"
+        "image": "asset/image/3.jpeg"
     },
     {
-      "title": "The Boys",
+      "title": "Take it off",
       "rating": "7.5",
       "duration": "1h 45min",
       "genre": "Fantasy",
-      "image": "asset/image/boys.jpeg"
+      "image": "asset/image/4.jpeg"
     },
   ];
 

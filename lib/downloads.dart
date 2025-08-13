@@ -10,46 +10,46 @@ class DownloadsScreen extends StatelessWidget {
     // All images are from assets folder
     final List<Map<String, dynamic>> downloading = [
       {
-        "title": "The Great Escape",
+        "title": "I respect your choice",
         "genre": "Action",
         "rating": 4.5,
         "progress": 0.6,
-        "image": "asset/image/matrix.jpeg"
+        "image": "asset/image/1.jpeg"
       },
       {
-        "title": "Space Wonders",
+        "title": "broken man",
         "genre": "Sci-Fi",
         "rating": 4.2,
         "progress": 0.3,
-        "image": "asset/image/manofsteel.webp"
+        "image": "asset/image/5.jpeg"
       },
       {
-        "title": "Mystery Island",
+        "title": " No Biggie",
         "genre": "Thriller",
         "rating": 4.8,
         "progress": 0.8,
-        "image": "asset/image/deadpool.webp"
+        "image": "asset/image/6.jpeg"
       },
     ];
 
     final List<Map<String, dynamic>> downloaded = [
       {
-        "title": "Comedy Nights",
+        "title": "Take it off",
         "genre": "Comedy",
         "rating": 4.0,
-        "image": "asset/image/matrix.jpeg"
+        "image": "asset/image/1.jpeg"
       },
       {
-        "title": "Hidden Truth",
+        "title": "There is no use",
         "genre": "Mystery",
         "rating": 3.8,
-        "image": "asset/image/matrix.jpeg"
+        "image": "asset/image/3.jpeg"
       },
       {
-        "title": "Romance in Paris",
+        "title": "Twisted situation",
         "genre": "Romance",
         "rating": 4.3,
-        "image": "asset/image/movie.jpg"
+        "image": "asset/image/2.jpeg"
       },
     ];
 
@@ -110,11 +110,7 @@ class DownloadsScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 4),
-                            Text(
-                              "Genre: ${item["genre"]}",
-                              style: const TextStyle(
-                                  color: Colors.white70, fontSize: 13),
-                            ),
+                           
                             const SizedBox(height: 4),
                             Row(
                               children: [
